@@ -262,12 +262,9 @@ nix flake update agent-skills
 |--------|--------|
 | [anthropics/skills](https://github.com/anthropics/skills) | mcp-builder, skill-creator, pdf |
 | [vercel-labs/skills](https://github.com/vercel-labs/skills) | find-skills |
-| [sundial-org/awesome-openclaw-skills](https://github.com/sundial-org/awesome-openclaw-skills) | email-management-expert |
 | [softaworks/agent-toolkit](https://github.com/softaworks/agent-toolkit) | agent-md-refactor, mermaid-diagrams, marp-slide |
 | [github/awesome-copilot](https://github.com/github/awesome-copilot) | gh-cli, git-commit, prd, github-issues, mcp-cli, make-skill-template |
 | [steipete/agent-scripts](https://github.com/steipete/agent-scripts) | 1password |
-| [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) | obsidian-markdown, obsidian-bases, json-canvas, defuddle |
-| [jackal092927/obsidian-official-cli-skills](https://github.com/jackal092927/obsidian-official-cli-skills) | obsidian-cli |
 
 ## License
 
