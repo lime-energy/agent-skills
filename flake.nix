@@ -17,18 +17,12 @@
     skills-dcramer-dex.flake = false;
     skills-vercel-labs.url = "github:vercel-labs/skills";
     skills-vercel-labs.flake = false;
-    skills-sundial-openclaw.url = "github:sundial-org/awesome-openclaw-skills";
-    skills-sundial-openclaw.flake = false;
     skills-softaworks.url = "github:softaworks/agent-toolkit";
     skills-softaworks.flake = false;
     skills-github-copilot.url = "github:github/awesome-copilot";
     skills-github-copilot.flake = false;
     skills-steipete.url = "github:steipete/agent-scripts";
     skills-steipete.flake = false;
-    skills-kepano-obsidian.url = "github:kepano/obsidian-skills";
-    skills-kepano-obsidian.flake = false;
-    skills-jackal-obsidian-cli.url = "github:jackal092927/obsidian-official-cli-skills";
-    skills-jackal-obsidian-cli.flake = false;
     skills-microsoft.url = "github:microsoft/skills";
     skills-microsoft.flake = false;
   };
@@ -45,12 +39,9 @@
         anthropics = inputs.skills-anthropics;
         dcramer-dex = inputs.skills-dcramer-dex;
         vercel-labs = inputs.skills-vercel-labs;
-        sundial-openclaw = inputs.skills-sundial-openclaw;
         softaworks = inputs.skills-softaworks;
         github-copilot = inputs.skills-github-copilot;
         steipete = inputs.skills-steipete;
-        kepano-obsidian = inputs.skills-kepano-obsidian;
-        jackal-obsidian-cli = inputs.skills-jackal-obsidian-cli;
         microsoft = inputs.skills-microsoft;
       };
 

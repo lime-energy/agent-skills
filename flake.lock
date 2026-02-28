@@ -79,12 +79,9 @@
         "skills-anthropics": "skills-anthropics",
         "skills-dcramer-dex": "skills-dcramer-dex",
         "skills-github-copilot": "skills-github-copilot",
-        "skills-jackal-obsidian-cli": "skills-jackal-obsidian-cli",
-        "skills-kepano-obsidian": "skills-kepano-obsidian",
         "skills-microsoft": "skills-microsoft",
         "skills-softaworks": "skills-softaworks",
         "skills-steipete": "skills-steipete",
-        "skills-sundial-openclaw": "skills-sundial-openclaw",
         "skills-vercel-labs": "skills-vercel-labs"
       }
     },
@@ -136,38 +133,6 @@
         "type": "github"
       }
     },
-    "skills-jackal-obsidian-cli": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1770984575,
-        "narHash": "sha256-p/jKaNmng1Iv9b8Eo/V3CcgcgDZLVJm6aLNRLywMzQU=",
-        "owner": "jackal092927",
-        "repo": "obsidian-official-cli-skills",
-        "rev": "ab6533943454abd5fe554b5a1550c0244d569d98",
-        "type": "github"
-      },
-      "original": {
-        "owner": "jackal092927",
-        "repo": "obsidian-official-cli-skills",
-        "type": "github"
-      }
-    },
-    "skills-kepano-obsidian": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1772210156,
-        "narHash": "sha256-SVRVUJoelr8mWnnye4h1RD1BvKeYWPs0P2iEZr5+2T0=",
-        "owner": "kepano",
-        "repo": "obsidian-skills",
-        "rev": "28b98025f5db4d791264631904dd4aa2d6c88631",
-        "type": "github"
-      },
-      "original": {
-        "owner": "kepano",
-        "repo": "obsidian-skills",
-        "type": "github"
-      }
-    },
     "skills-microsoft": {
       "flake": false,
       "locked": {
@@ -213,22 +178,6 @@
       "original": {
         "owner": "steipete",
         "repo": "agent-scripts",
-        "type": "github"
-      }
-    },
-    "skills-sundial-openclaw": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1769934909,
-        "narHash": "sha256-BSSaGYmpJt1BMwJs48U9/AsfshU+kXV3xljaks5y9tI=",
-        "owner": "sundial-org",
-        "repo": "awesome-openclaw-skills",
-        "rev": "6d998e005da63ddec0e368cfe93047c3214cd747",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sundial-org",
-        "repo": "awesome-openclaw-skills",
         "type": "github"
       }
     },
