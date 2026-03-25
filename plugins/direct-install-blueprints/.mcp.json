@@ -1,11 +1,22 @@
 {
   "mcpServers": {
-    "awslabs.cfn-mcp-server": {
+    "aws-knowledge": {
+      "url": "https://knowledge-mcp.global.api.aws",
+      "type": "http"
+    },
+    "awslabs.aws-iac-mcp-server": {
       "command": "uvx",
-      "args": ["awslabs.cfn-mcp-server@latest"],
+      "args": ["awslabs.aws-iac-mcp-server@latest"],
       "env": {
-        "AWS_PROFILE": "${AWS_PROFILE:-default}",
-        "AWS_REGION": "${AWS_REGION:-us-east-1}"
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      }
+    },
+    "awslabs.aws-documentation-mcp-server": {
+      "command": "uvx",
+      "args": ["awslabs.aws-documentation-mcp-server@latest"],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "AWS_DOCUMENTATION_PARTITION": "aws"
       }
     },
     "awslabs.aws-serverless-mcp-server": {
@@ -34,14 +45,6 @@
     "awslabs.dynamodb-mcp-server": {
       "command": "uvx",
       "args": ["awslabs.dynamodb-mcp-server@latest"],
-      "env": {
-        "AWS_PROFILE": "${AWS_PROFILE:-default}",
-        "AWS_REGION": "${AWS_REGION:-us-east-1}"
-      }
-    },
-    "awslabs.lambda-tool-mcp-server": {
-      "command": "uvx",
-      "args": ["awslabs.lambda-tool-mcp-server@latest"],
       "env": {
         "AWS_PROFILE": "${AWS_PROFILE:-default}",
         "AWS_REGION": "${AWS_REGION:-us-east-1}"
