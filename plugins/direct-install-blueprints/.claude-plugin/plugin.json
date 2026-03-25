@@ -1,6 +1,6 @@
 {
   "name": "direct-install-blueprints",
-  "version": "0.8.0",
+  "version": "1.0.0",
   "description": "Blueprints, agents, and tools for Lime Energy direct-install platform development across Auditor, Closer, and Prospector",
   "author": {
     "name": "Wes Marketplace",
@@ -19,5 +19,6 @@
     "react",
     "lambda"
   ],
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "lspServers": "./.lsp.json"
 }
