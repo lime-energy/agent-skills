@@ -24,6 +24,7 @@
     "./agents/frontend-architect.md",
     "./agents/native-app-architect.md"
   ],
+  "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "lspServers": "./.lsp.json"
 }
