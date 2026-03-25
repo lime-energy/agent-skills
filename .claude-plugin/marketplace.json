@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "Claude Code plugins for Lime Energy platform development",
-    "version": "0.7.0"
+    "version": "0.8.0"
   },
   "plugins": [
     {
       "name": "direct-install-blueprints",
       "source": "./plugins/direct-install-blueprints",
       "description": "Architect agents, AWS MCP servers, and blueprints for the Lime Energy direct-install platform (Auditor, Closer, Prospector)",
-      "version": "0.7.0",
+      "version": "0.8.0",
       "author": {
         "name": "Lime Energy"
       },
