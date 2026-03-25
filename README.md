@@ -44,9 +44,25 @@ Blueprints, agents, and tools for the Lime Energy direct-install platform (Audit
 **LSP:** TypeScript language server
 
 **Install:**
-```bash
-claude plugin install direct-install-blueprints --plugin-dir ./plugins/direct-install-blueprints
+
+Add the marketplace, then install the plugin:
+
+```shell
+# Add the marketplace (once)
+/plugin marketplace add lime-energy/wes_marketplace
+
+# Install the plugin
+/plugin install direct-install-blueprints@wes-marketplace
 ```
+
+For local development (from a clone of this repo):
+
+```shell
+/plugin marketplace add ./path/to/wes_marketplace
+/plugin install direct-install-blueprints@wes-marketplace
+```
+
+**Prerequisites:** AWS MCP servers require `uv` ([install](https://docs.astral.sh/uv/getting-started/installation/)) and a configured `AWS_PROFILE`. TypeScript LSP requires `typescript-language-server` (`npm i -g typescript-language-server typescript`).
 
 ## Skill Distribution (Nix)
 

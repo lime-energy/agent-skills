@@ -1,0 +1,35 @@
+{
+  "name": "wes-marketplace",
+  "owner": {
+    "name": "Lime Energy"
+  },
+  "metadata": {
+    "description": "Claude Code plugins for Lime Energy platform development",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "direct-install-blueprints",
+      "source": "./plugins/direct-install-blueprints",
+      "description": "Architect agents, AWS MCP servers, and blueprints for the Lime Energy direct-install platform (Auditor, Closer, Prospector)",
+      "version": "0.1.0",
+      "author": {
+        "name": "Lime Energy"
+      },
+      "repository": "https://github.com/lime-energy/wes_marketplace",
+      "license": "MIT",
+      "keywords": [
+        "lime-energy",
+        "direct-install",
+        "aws",
+        "appsync",
+        "dynamodb",
+        "sam",
+        "cloudformation",
+        "react",
+        "lambda"
+      ],
+      "category": "platform"
+    }
+  ]
+}
