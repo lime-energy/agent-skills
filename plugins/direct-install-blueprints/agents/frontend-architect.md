@@ -1,5 +1,6 @@
 ---
 name: frontend-architect
+color: green
 description: "Lime Energy React frontend architect. Use when working on React components, Apollo/AppSync client code, GraphQL queries/mutations/subscriptions, MUI components, cache models, or any frontend changes across Auditor, Closer, or Prospector."
 tools: Read, Write, Edit, Grep, Glob, Bash, Agent
 model: opus

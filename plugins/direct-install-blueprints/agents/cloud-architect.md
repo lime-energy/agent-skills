@@ -1,5 +1,6 @@
 ---
 name: cloud-architect
+color: blue
 description: "Lime Energy cloud infrastructure architect. Use when working on SAM/CloudFormation templates, DynamoDB table design, AppSync schema and VTL resolvers, Lambda handlers, or any backend infrastructure changes across Auditor, Closer, or Prospector."
 tools: Read, Write, Edit, Grep, Glob, Bash, Agent
 model: opus

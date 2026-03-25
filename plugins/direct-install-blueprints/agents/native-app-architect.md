@@ -1,5 +1,6 @@
 ---
 name: native-app-architect
+color: yellow
 description: "Lime Energy native/mobile app architect. Use when working on Cordova builds, iOS deployment, mobile-specific features, offline capabilities, or native app packaging for Auditor, Closer, or Prospector."
 tools: Read, Write, Edit, Grep, Glob, Bash, Agent
 model: sonnet
