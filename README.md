@@ -1,265 +1,83 @@
-# agent-skills
+# wes_marketplace
 
-Declarative agent skill management for development projects. Define your organization's shared skills once, install them everywhere with a single import.
+Agent marketplace for Wes — Claude Code plugins, skills, and agents for development projects.
 
-Built on [agent-skills-nix](https://github.com/Kyure-A/agent-skills-nix) and designed for [devenv.sh](https://devenv.sh) projects.
-
-## How It Works
+## Structure
 
 ```
-┌─────────────────────────────────────────────────┐
-│  agent-skills (this repo)                       │
-│                                                 │
-│  lib/manifest.nix    ← shared skill manifest    │
-│  skills/             ← org custom skills        │
-│  flake.lock          ← pinned source versions   │
-│                                                 │
-│  exports: devenvModules.default                  │
-└───────────────────┬─────────────────────────────┘
-                    │ import
-        ┌───────────┼───────────┐
-        ▼           ▼           ▼
-   project-a    project-b    project-c
-   devenv.nix   devenv.nix   devenv.nix
+wes_marketplace/
+├── plugins/                          # Claude Code plugins
+│   └── direct-install-blueprints/    # Lime Energy direct-install platform
+│       ├── .claude-plugin/plugin.json
+│       ├── agents/                   # Cloud, Frontend, Native architects
+│       ├── skills/                   # Platform-specific skills
+│       ├── references/               # Shared architecture & pattern docs
+│       ├── commands/                 # Slash commands
+│       ├── .mcp.json                 # AWS MCP servers (CFN, AppSync, DDB, Lambda, CloudWatch)
+│       └── .lsp.json                 # TypeScript LSP
+├── flake.nix                         # Nix flake for skill distribution
+├── lib/                              # Nix skill manifest & source helpers
+├── modules/                          # devenv module for project integration
+├── skills/                           # Standalone skills (Nix-distributed)
+└── openspec/                         # Change management
 ```
 
-All skill sources are pinned in `flake.lock`. When you run `nix flake update agent-skills` in a project, every project gets the same skill versions. No runtime downloads, no floating versions, fully reproducible.
+## Plugins
 
-## Quick Start
+### direct-install-blueprints
 
-### 1. Add the input to your project's `flake.nix`
+Blueprints, agents, and tools for the Lime Energy direct-install platform (Auditor, Closer, Prospector).
 
-```nix
-{
-  inputs = {
-    # ... your existing inputs ...
-    agent-skills.url = "github:lime-energy/agent-skills";
-  };
+**Agents:**
+- `cloud-architect` — SAM/CloudFormation, DynamoDB, AppSync, Lambda, event architecture
+- `frontend-architect` — React 18, Apollo/AppSync client, MUI, cache models, repository pattern
+- `native-app-architect` — Cordova, iOS builds, offline-first, mobile auth
 
-  # If using devenv.lib.mkFlake, inputs are passed through automatically
-}
-```
+**MCP Servers (AWS Labs):**
+- CloudFormation (`awslabs.cfn-mcp-server`)
+- SAM/Serverless (`awslabs.aws-serverless-mcp-server`)
+- AppSync (`awslabs.aws-appsync-mcp-server`)
+- DynamoDB (`awslabs.dynamodb-mcp-server`)
+- Lambda (`awslabs.lambda-tool-mcp-server`)
+- CloudWatch (`awslabs.cloudwatch-mcp-server`)
 
-### 2. Import the module in your `devenv.nix`
+**LSP:** TypeScript language server
 
-```nix
-{ inputs, pkgs, ... }:
-
-{
-  imports = [ inputs.agent-skills.devenvModules.default ];
-
-  agent-skills = {
-    enable = true;
-    targets = {
-      claude = true;    # → .claude/skills/
-      copilot = true;   # → .github/skills/
-    };
-  };
-}
-```
-
-### 3. Enter the shell
-
+**Install:**
 ```bash
-devenv shell
-# Skills are synced to .claude/skills/ and .github/skills/
+claude plugin install direct-install-blueprints --plugin-dir ./plugins/direct-install-blueprints
 ```
 
-### 4. Add target directories to `.gitignore`
+## Skill Distribution (Nix)
 
-```gitignore
-.claude/skills/
-.github/skills/
-.codex/skills/
-.cursor/skills/
-```
+The Nix flake system distributes standalone skills to projects via devenv. This is separate from the plugin system.
 
-## Configuration
-
-### Targets
-
-Choose which agents receive skills in each project:
+### Quick Start
 
 ```nix
-agent-skills.targets = {
-  claude   = true;   # .claude/skills/
-  copilot  = true;   # .github/skills/
-  codex    = true;   # .codex/skills/
-  cursor   = true;   # .cursor/skills/
-  windsurf = true;   # .windsurf/skills/
-  gemini   = true;   # .gemini/skills/
-};
-```
-
-### Project-Local Skills
-
-Add skills specific to a project alongside the shared ones:
-
-```nix
-agent-skills = {
-  enable = true;
-  targets.claude = true;
-
-  # Directory containing <skill-name>/SKILL.md subdirectories
-  extraSkills = [ ./skills ];
-};
-```
-
-Project-local skills are merged with the shared manifest. If a project skill has the same ID as a shared skill, the project skill takes precedence.
-
-### Example: Project with custom skills
-
-```
-my-project/
-├── devenv.nix
-├── flake.nix
-├── skills/
-│   └── my-api-guide/
-│       └── SKILL.md       ← project-specific skill
-└── src/
+# flake.nix
+{
+  inputs.wes-marketplace.url = "github:lime-energy/wes_marketplace";
+}
 ```
 
 ```nix
 # devenv.nix
-{ inputs, ... }:
 {
-  imports = [ inputs.agent-skills.devenvModules.default ];
-
+  imports = [ inputs.wes-marketplace.devenvModules.default ];
   agent-skills = {
     enable = true;
     targets.claude = true;
-    extraSkills = [ ./skills ];
   };
 }
 ```
 
-## Managing the Shared Manifest
-
-The shared skill manifest lives in `lib/manifest.nix`. Each entry specifies a source, subdirectory, and which skills to include.
-
-### Adding an external skill source
-
-1. Add the flake input in `flake.nix`:
-
-```nix
-inputs = {
-  # ...
-  skills-my-source.url = "github:owner/repo";
-  skills-my-source.flake = false;
-};
-```
-
-2. Add it to `skillSources` in `flake.nix`:
-
-```nix
-skillSources = {
-  # ...
-  my-source = inputs.skills-my-source;
-};
-```
-
-3. Add the entry in `lib/manifest.nix`:
-
-```nix
-# All skills from the source
-{ source = skillSources.my-source; subdir = "skills"; skills = [ "*" ]; }
-
-# Or cherry-pick specific skills
-{ source = skillSources.my-source; subdir = "skills"; skills = [ "skill-a" "skill-b" ]; }
-```
-
-4. Run `nix flake lock` to pin the new input.
-
-### Adding a custom organization skill
-
-Create a directory under `skills/` with a `SKILL.md` file:
-
-```
-skills/
-└── my-org-skill/
-    ├── SKILL.md
-    ├── scripts/        # optional
-    ├── references/     # optional
-    └── assets/         # optional
-```
-
-The skill is automatically included via the `localSkillsPath` wildcard source.
-
-### How cherry-picking avoids ID collisions
-
-Skill IDs in `agent-skills-nix` are **not namespaced by source**. If two repos both contain a `webapp-testing` skill, they collide. The manifest handles this by pointing `subdir` directly at each cherry-picked skill's directory:
-
-```
-# Instead of scanning all of skills/ and filtering:
-{ source = src; subdir = "skills"; skills = [ "pdf" ]; }
-
-# The source helper points subdir at skills/pdf/ directly.
-# SKILL.md is found at depth 0, and the source name (= skill name)
-# becomes the ID. No scanning of siblings, no collisions.
-```
-
-This is handled automatically by `lib/sources.nix`.
-
-## Architecture
-
-### File structure
-
-```
-├── flake.nix              # Inputs (skill sources) and outputs (devenv module, packages)
-├── flake.lock             # Pinned versions of all skill sources
-├── lib/
-│   ├── manifest.nix       # Skill manifest: what to install
-│   └── sources.nix        # Converts manifest → agent-skills-nix format
-├── modules/
-│   └── devenv.nix         # devenv module for project integration
-└── skills/                # Organization custom skills
-```
-
-### Data flow
-
-```
-manifest.nix
-    │
-    ▼
-sources.nix (mkSources, mkEnableAll, mkEnable)
-    │
-    ▼
-agent-skills-nix lib (discoverCatalog → allowlistFor → selectSkills)
-    │
-    ▼
-mkBundle (Nix store derivation with symlinked skills)
-    │
-    ▼
-devenv module (rsync bundle → project target directories on shell entry)
-```
-
-### Updating skill versions
-
-```bash
-# Update all skill sources
-nix flake update
-
-# Update a specific source
-nix flake update skills-anthropics
-
-# Then in each project that consumes this:
-nix flake update agent-skills
-```
-
-## Included Skills
-
-### Wildcard sources (all skills)
+### Included Skills
 
 | Source | Skills |
 |--------|--------|
-| `skills/` (this repo) | Organization custom skills |
 | [dcramer/dex](https://github.com/dcramer/dex) | dex, dex-plan |
-| [microsoft/skills](https://github.com/microsoft/skills) (deep-wiki) | wiki-architect, wiki-page-writer, wiki-changelog, wiki-researcher, wiki-qa, wiki-vitepress, wiki-onboarding, wiki-agents-md, wiki-llms-txt, wiki-ado-convert |
-
-### Cherry-picked skills
-
-| Source | Skills |
-|--------|--------|
+| [microsoft/skills](https://github.com/microsoft/skills) | wiki-architect, wiki-page-writer, wiki-changelog, wiki-researcher, wiki-qa, wiki-vitepress, wiki-onboarding, wiki-agents-md, wiki-llms-txt, wiki-ado-convert |
 | [anthropics/skills](https://github.com/anthropics/skills) | mcp-builder, skill-creator, pdf |
 | [vercel-labs/skills](https://github.com/vercel-labs/skills) | find-skills |
 | [softaworks/agent-toolkit](https://github.com/softaworks/agent-toolkit) | agent-md-refactor, mermaid-diagrams, marp-slide |

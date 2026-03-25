@@ -1,5 +1,5 @@
 {
-  description = "Declarative agent skill management for development projects";
+  description = "Agent marketplace — Claude Code plugins, skills, and agents for development projects";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";

@@ -1,6 +1,8 @@
 ## Context
 
-The Lime Energy platform runs three production applications (Auditor, Closer, Prospector) on a consistent AWS serverless stack: React 18 + AppSync + DynamoDB + Lambda, managed via SAM/CloudFormation with nested stacks. The agent-skills registry is a Nix flake that discovers SKILL.md files from local and external sources, bundles them, and exposes them via a devenv module. Local skills live in `skills/<skill-name>/SKILL.md`. The manifest at `lib/manifest.nix` already wildcards all local skills (`skills = [ "*" ]`), so any skill added to the `skills/` directory is automatically available.
+The Lime Energy platform runs three production applications (Auditor, Closer, Prospector) on a consistent AWS serverless stack: React 18 + AppSync + DynamoDB + Lambda, managed via SAM/CloudFormation with nested stacks. The wes_marketplace repo is an agent marketplace containing Claude Code plugins, standalone skills (Nix-distributed), and shared reference material.
+
+The "Direct Install Blueprints" plugin (`plugins/direct-install-blueprints/`) is a Claude Code plugin that bundles skills, agents, MCP servers, and reference docs for the Lime Energy platform. It includes three architect agents (cloud, frontend, native-app), AWS MCP servers (CFN, AppSync, DynamoDB, Lambda, CloudWatch), TypeScript LSP, and shared reference documents extracted from the three production repos.
 
 The three repos are private GitHub repos under the `lime-energy` org. All follow identical patterns: `backend/<app>.yml` (main SAM template), `backend/dynamodb-template.yml`, `backend/cognito-template.yml`, `backend/schema.graphql`, `backend/resolvers/` (VTL), `backend/src/` (Lambda handlers in TypeScript), `src/` (React frontend), `.github/workflows/` (CI/CD).
 
@@ -23,13 +25,13 @@ The three repos are private GitHub repos under the `lime-energy` org. All follow
 
 ## Decisions
 
-### Decision 1: Flat skills directory, not nested plugin structure
+### Decision 1: Claude Code plugin structure
 
-**Choice:** Place all 15 skills directly in `skills/<skill-name>/SKILL.md` rather than a nested `plugins/lime-platform/skills/...` structure.
+**Choice:** Package as a Claude Code plugin at `plugins/direct-install-blueprints/` with agents, skills, MCP servers, LSP, and shared references — not flat skills in the repo root.
 
-**Rationale:** The manifest already wildcards `skills/` with `"*"`. A flat structure means zero config changes — every new skill dir is automatically discovered. Plugin nesting would require manifest changes and adds complexity with no benefit for an org-internal collection.
+**Rationale:** A plugin provides a richer delivery mechanism than standalone skills: agents can orchestrate across skills, MCP servers provide live AWS access, LSP gives type checking, and everything installs as a single unit. The Nix flake system remains for distributing standalone skills to non-Claude-Code environments.
 
-**Alternative considered:** Nested plugin directory. Rejected because it would require updating `manifest.nix` with a new source entry and doesn't match how other local skills would be added.
+**Alternative considered:** Flat skills directory. This was the original design but doesn't support agents, MCP servers, or LSP integration.
 
 ### Decision 2: Prefix all skill names with `lime-`
 
@@ -39,13 +41,13 @@ The three repos are private GitHub repos under the `lime-energy` org. All follow
 
 **Alternative considered:** No prefix, relying on context. Rejected because the manifest pulls skills from 7+ external sources and name collisions are likely.
 
-### Decision 3: Reference documents as shared assets
+### Decision 3: Reference documents as plugin-level shared assets
 
-**Choice:** Create a `skills/_lime-references/` directory containing shared reference documents (architecture diagrams, CloudFormation patterns, naming conventions) that individual skills can reference via relative paths.
+**Choice:** Place shared reference documents in `plugins/direct-install-blueprints/references/` — a plugin-level directory that agents and skills reference via `${CLAUDE_PLUGIN_ROOT}/references/`. Not a skill, not underscore-prefixed.
 
-**Rationale:** Many skills need the same background knowledge (e.g., the DynamoDB table pattern, VTL resolver pattern, frontend API structure). Duplicating this in every SKILL.md would be unmaintainable. A shared reference directory keeps the single source of truth.
+**Rationale:** Reference docs (architecture, conventions, CloudFormation patterns, VTL templates, Lambda patterns, frontend patterns) are knowledge that agents and skills consume — they are not skills themselves. Placing them at the plugin root makes them accessible to all components via the standard plugin path variable.
 
-**Alternative considered:** Inline all reference material in each SKILL.md. Rejected because it would create massive duplication and drift. Also considered a single mega-reference skill — but skills should be independently usable.
+**Alternative considered:** `_lime-references/` as a pseudo-skill directory. Rejected because the underscore prefix was a hack to avoid Nix discovery, and reference docs aren't skills.
 
 ### Decision 4: Shell scripts for repeatable operations
 

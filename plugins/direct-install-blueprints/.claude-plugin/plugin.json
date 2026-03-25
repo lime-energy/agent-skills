@@ -1,0 +1,27 @@
+{
+  "name": "direct-install-blueprints",
+  "version": "0.1.0",
+  "description": "Blueprints, agents, and tools for Lime Energy direct-install platform development across Auditor, Closer, and Prospector",
+  "author": {
+    "name": "Wes Marketplace",
+    "url": "https://github.com/lime-energy/wes_marketplace"
+  },
+  "repository": "https://github.com/lime-energy/wes_marketplace",
+  "license": "MIT",
+  "keywords": [
+    "lime-energy",
+    "direct-install",
+    "aws",
+    "appsync",
+    "dynamodb",
+    "sam",
+    "cloudformation",
+    "react",
+    "lambda"
+  ],
+  "agents": "./agents/",
+  "skills": "./skills/",
+  "commands": "./commands/",
+  "mcpServers": "./.mcp.json",
+  "lspServers": "./.lsp.json"
+}
